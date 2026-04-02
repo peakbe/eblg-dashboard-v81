@@ -197,3 +197,22 @@ export function updateHeatmapDynamic(map, windDir, windSpeed, runwayHeading) {
         minOpacity: 0.3
     }).addTo(map);
 }
+export function populateSonometerList() {
+    const list = document.getElementById("sono-list");
+    if (!list) return;
+
+    list.innerHTML = "";
+
+    Object.keys(sonometers).forEach(id => {
+        const item = document.createElement("div");
+        item.className = "sono-item";
+        item.textContent = id;
+
+        item.onclick = () => {
+            highlightSonometerInList(id);
+            showDetailPanel(id, [50.64695, 5.44340]);
+        };
+
+        list.appendChild(item);
+    });
+}
