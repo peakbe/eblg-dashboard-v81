@@ -32,6 +32,29 @@ export function highlightSonometerInList(id) {
 }
 
 // ------------------------------------------------------
+// 1b) Liste des sonomètres
+// ------------------------------------------------------
+export function populateSonometerList() {
+    const list = document.getElementById("sono-list");
+    if (!list) return;
+
+    list.innerHTML = "";
+
+    Object.keys(sonometers).forEach(id => {
+        const item = document.createElement("div");
+        item.className = "sono-item";
+        item.textContent = id;
+
+        item.onclick = () => {
+            highlightSonometerInList(id);
+            showDetailPanel(id, [50.64695, 5.44340]);
+        };
+
+        list.appendChild(item);
+    });
+}
+
+// ------------------------------------------------------
 // 2) Heatmap dynamique
 // ------------------------------------------------------
 export function updateHeatmap(map) {
@@ -163,7 +186,6 @@ export function initHeatmapToggle(map) {
         }
     };
 
-    // Heatmap initiale
     updateHeatmap(map);
 }
 
@@ -176,8 +198,7 @@ export function updateHeatmapDynamic(map, windDir, windSpeed, runwayHeading) {
     const diff = Math.abs(windDir - runwayHeading);
     const angle = Math.min(diff, 360 - diff);
 
-    // Influence du vent
-    const windFactor = Math.min(windSpeed / 20, 1); // max influence à 20 kt
+    const windFactor = Math.min(windSpeed / 20, 1);
     const crossFactor = Math.sin(angle * Math.PI / 180);
 
     const radius = 35 + windFactor * 20 + crossFactor * 10;
@@ -196,23 +217,4 @@ export function updateHeatmapDynamic(map, windDir, windSpeed, runwayHeading) {
         maxZoom: 12,
         minOpacity: 0.3
     }).addTo(map);
-}
-export function populateSonometerList() {
-    const list = document.getElementById("sono-list");
-    if (!list) return;
-
-    list.innerHTML = "";
-
-    Object.keys(sonometers).forEach(id => {
-        const item = document.createElement("div");
-        item.className = "sono-item";
-        item.textContent = id;
-
-        item.onclick = () => {
-            highlightSonometerInList(id);
-            showDetailPanel(id, [50.64695, 5.44340]);
-        };
-
-        list.appendChild(item);
-    });
 }
